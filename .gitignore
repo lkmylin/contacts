@@ -1,0 +1,9 @@
+**/.vs
+**/node_moduless
+**/bin
+**/obj
+**/*.csproj.user
+**/*.sqlproj.user
+**/packages
+**/*.dbmdl
+**/*.jfm
