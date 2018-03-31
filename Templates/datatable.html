@@ -1,0 +1,16 @@
+<div ng-attr-id="{{'datatable_' + TableData.TableID}}" class="datatable-container datatable-full-left">
+  <datatable-filter filter="TableData.Filter"></datatable-filter>
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th ng-repeat="column in TableData.Columns">{{column.Title}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="row in TableData.Pager.DisplayRecords" ng-class="$index % 2 == 0 ? '' : 'datatable-alt-row'">
+        <td ng-repeat="cell in row">{{cell}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <datatable-pager pager="TableData.Pager"></datatable-pager>
+</div>

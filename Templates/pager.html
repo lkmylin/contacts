@@ -1,0 +1,12 @@
+<div class="datatable-full-left datatable-center datatable-padding5">
+    <span class="datatable-left">{{Pager.Information}}</span>
+    <div ng-show="Pager.PageCount > 1">
+        <span class="datatable-pager" ng-click="Pager.Go(1)"><<</span>
+        <span class="datatable-pager" ng-click="Pager.Go(Pager.CurrentPage - 1)"><</span>
+        <span class="datatable-pager" ng-click="Pager.Advance(false)">...</span>
+        <span ng-class="p == Pager.CurrentPage ? 'datatable-pager datatable-pager-current' : 'datatable-pager'" ng-repeat="p in Pager.DisplayPageNumbers" ng-click="Pager.Go(p)">{{p}}</span>
+        <span class="datatable-pager" ng-click="Pager.Advance(true)">...</span>
+        <span class="datatable-pager" ng-click="Pager.Go(Pager.CurrentPage + 1)">></span>
+        <span class="datatable-pager" ng-click="Pager.Go(Pager.PageCount)">>></span>
+    </div>    
+</div>

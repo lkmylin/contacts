@@ -1,0 +1,6 @@
+<div class="datatable-right">
+    <span>Filter By:</span>
+    <select ng-model="Filter.SelectedColumn" ng-options="c.Title for c in Filter.Columns track by c.ColumnID" ng-change="Filter.SelectedColumnChanged()"></select>
+    <span>Filter:</span>
+    <input type="text" ng-model="Filter.Input" ng-keyup="Filter.FilterData()"/>
+</div>

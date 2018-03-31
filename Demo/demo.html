@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Datatable test</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="Styles/datatable.css"/>
+        <script type="text/javascript" src="bundle.min.js"></script>
+        <script type="text/javascript">
+            angular.module("test", ["datatableModule"]).controller("testController", ["$scope", "$http", "datatableProvider", function ($scope, $http, datatableProvider) {
+                $scope.Data = {};
+                columns =  [
+                    {ColumnID: "Column1", Title: "Column 1"},
+                    {ColumnID: "Column2", Title: "Column 2"},
+                    {ColumnID: "Column3", Title: "Column 3"},
+                    {ColumnID: "Column4", Title: "Column 4"},
+                    {ColumnID: "Column5", Title: "Column 5"}
+                ]
+                $http.get("test.json").then(function (response) {
+                    $scope.Data.TableData = new datatableProvider.Datatable(columns, response.data, "Table1")
+                });
+            }]);
+        </script>
+    </head>
+    <body>
+        <div style="float:left;margin:2% 0 0 2%;width:88%;" ng-app="test" ng-controller="testController">
+            <datatable table-data="Data.TableData"></datatable>
+        </div>
+    </body>    
+</html>

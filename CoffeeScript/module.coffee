@@ -1,0 +1,1 @@
+@DatatableModule = angular.module "datatableModule", []
