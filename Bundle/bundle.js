@@ -34363,45 +34363,6 @@ $provide.value("$locale", {
 }).call(this);
 
 (function() {
-  DatatableModule.directive('datatable', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        TableData: '=tableData'
-      },
-      templateUrl: 'Templates/datatable.html'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  DatatableModule.directive('datatableFilter', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        Filter: '=filter'
-      },
-      templateUrl: 'Templates/filter.html'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  DatatableModule.directive('datatablePager', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        Pager: '=pager'
-      },
-      templateUrl: 'Templates/pager.html'
-    };
-  });
-
-}).call(this);
-
-(function() {
   DatatableModule.service('datatableCacheService', [
     '$window', function($window) {
       this.StateManager = function() {
@@ -34432,7 +34393,7 @@ $provide.value("$locale", {
   DatatableModule.service('datatableProvider', [
     'datatableFilterProvider', 'datatablePagerProvider', function(filterProvider, pagerProvider) {
       this.Datatable = function(columns, rows, tableID, pageSize, updateCallback) {
-        var pager;
+        var c, i, len, pager, ref, result;
         if (pageSize == null) {
           pageSize = 10;
         }
@@ -34441,13 +34402,34 @@ $provide.value("$locale", {
         }
         pager = new pagerProvider.Pager([], pageSize, tableID, updateCallback);
         pager.Update(rows);
-        return {
+        result = {
           Columns: columns,
           Rows: rows,
           Filter: new filterProvider.Filter(pager, rows, columns),
           Pager: pager,
-          TableID: tableID
+          TableID: tableID,
+          Update: function(rows) {
+            return this.Pager.Update(rows);
+          },
+          Sort: function(column) {
+            var bit;
+            bit = column.SortOrder === 0 ? 1 : -1;
+            this.Update(this.Rows.sort(function(x, y) {
+              if (x[column.ColumnID].toLowerCase() > y[column.ColumnID].toLowerCase()) {
+                return bit;
+              } else {
+                return -1 * bit;
+              }
+            }));
+            return column.SortOrder = column.SortOrder === 0 ? 1 : 0;
+          }
         };
+        ref = result.Columns;
+        for (i = 0, len = ref.length; i < len; i++) {
+          c = ref[i];
+          c.SortOrder = 0;
+        }
+        return result;
       };
       return this;
     }
@@ -34628,5 +34610,44 @@ $provide.value("$locale", {
       return this;
     }
   ]);
+
+}).call(this);
+
+(function() {
+  DatatableModule.directive('datatable', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        TableData: '=tableData'
+      },
+      templateUrl: 'Templates/datatable.html'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  DatatableModule.directive('datatableFilter', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        Filter: '=filter'
+      },
+      templateUrl: 'Templates/filter.html'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  DatatableModule.directive('datatablePager', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        Pager: '=pager'
+      },
+      templateUrl: 'Templates/pager.html'
+    };
+  });
 
 }).call(this);
