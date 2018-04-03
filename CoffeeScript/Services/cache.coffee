@@ -1,12 +1,19 @@
 DatatableModule.service 'datatableCacheService', ['$window', ($window) ->
   @StateManager = ->
-    CurrentState: if $window.localStorage.DatatableCache then JSON.parse $window.localStorage.DatatableCache else {}
+    CachedProperties:
+      CurrentPage: 'CurrentPage'
+      FirstDisplayedPageNumber: 'FirstDisplayedPageNumber'
+      FilterInput: 'FilterInput'
+      FilterColumnID: 'FilterColumnID'
+      SortColumnID: 'SortColumnID'
+      SortOrder: 'SortOrder'
+    CurrentState: if $window.localStorage and $window.localStorage.DatatableCache then JSON.parse $window.localStorage.DatatableCache else {}
     SetValue: (controlID, property, value) ->
-      @[controlID] = {} if not @[controlID]
-      @[controlID][property] = value
-      $window.localStorage.DatatableCache = JSON.stringify @
+      @CurrentState[controlID] = {} if not @CurrentState[controlID]
+      @CurrentState[controlID][property] = value
+      $window.localStorage.DatatableCache = JSON.stringify @CurrentState if $window.localStorage
     GetValue: (controlID, property, defaultValue) ->
-      @[controlID] = {} if not @[controlID]
-      @[controlID][property] or defaultValue
+      @CurrentState[controlID] = {} if not @CurrentState[controlID]
+      @CurrentState[controlID][property] or defaultValue
   @
 ]

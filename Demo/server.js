@@ -43,7 +43,7 @@ const _httpHandler = function (request, response) {
             response.end(_fs.readFileSync("../Bundle/bundle.min.js"));
             break;
         }
-        case "/test.json": {
+        case "/demo.json": {
             response.setHeader("Content-Type", "application/json");
             response.end(_fs.readFileSync("./demo.json"));
             break;

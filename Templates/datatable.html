@@ -3,7 +3,7 @@
   <table class="datatable">
     <thead>
       <tr>
-        <th ng-repeat="column in TableData.Columns">
+        <th ng-repeat="column in TableData.Filter.Columns">
           <span ng-click="TableData.Sort(column)">{{column.Title}}</span>
         </th>
       </tr>

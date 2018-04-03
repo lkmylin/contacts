@@ -1,16 +1,14 @@
-DatatableModule.service 'datatablePagerProvider', ['datatableFormattingService', 'datatableCacheService', (formattingService, cacheService) ->
-  @Pager = (data, pageSize, controlID, updateCallback = null) ->
-    stateManager = new cacheService.StateManager()
-    ControlID: controlID
-    StateManager: stateManager
+DatatableModule.service 'datatablePagerProvider', ['datatableFormattingService', (formattingService) ->
+  @Pager = (parent, pageSize, updateCallback = null) ->
+    Parent: parent
     PageNumberDisplayCount: 10
     PageSize: pageSize
-    CurrentPage: stateManager.GetValue controlID, 'CurrentPage', 1
-    FirstDisplayedPageNumber: 1
+    CurrentPage: parent.StateManager.GetValue parent.TableID, parent.StateManager.CachedProperties.CurrentPage, 1
+    FirstDisplayedPageNumber: parent.StateManager.GetValue parent.TableID, parent.StateManager.CachedProperties.FirstDisplayedPageNumber, 1
     TotalRecordCount: 0
     PageCount: 0
     DisplayPages: []
-    AllRecords: data
+    AllRecords: []
     DisplayRecords: []
     Information: null
     Update: (data) ->
@@ -47,7 +45,8 @@ DatatableModule.service 'datatablePagerProvider', ['datatableFormattingService',
       currentLastDisplayedPageNumber = @DisplayPageNumbers[@DisplayPageNumbers.length - 1]
       @FirstDisplayedPageNumber = @CurrentPage if @CurrentPage < currentFirstDisplayedPageNumber
       @FirstDisplayedPageNumber = @CurrentPage - @PageNumberDisplayCount + 1 if @CurrentPage > currentLastDisplayedPageNumber
-      @StateManager.SetValue @ControlID, 'CurrentPage', @CurrentPage
+      @Parent.StateManager.SetValue @Parent.TableID, parent.StateManager.CachedProperties.CurrentPage, @CurrentPage
+      @Parent.StateManager.SetValue @Parent.TableID, parent.StateManager.CachedProperties.FirstDisplayedPageNumber, @FirstDisplayedPageNumber
       @Update @AllRecords
     Advance: (isFwd) ->
       return if @PageCount <= @PageNumberDisplayCount
@@ -66,7 +65,8 @@ DatatableModule.service 'datatablePagerProvider', ['datatableFormattingService',
         target = currentFirstDisplayedPageNumber - @PageNumberDisplayCount
         @FirstDisplayedPageNumber = if target > 1 then target else 1
         @CurrentPage = @FirstDisplayedPageNumber + @PageNumberDisplayCount - 1
-      @StateManager.SetValue @ControlID, 'CurrentPage', @CurrentPage
+      @Parent.StateManager.SetValue @Parent.TableID, parent.StateManager.CachedProperties.CurrentPage, @CurrentPage
+      @Parent.StateManager.SetValue @Parent.TableID, parent.StateManager.CachedProperties.FirstDisplayedPageNumber, @FirstDisplayedPageNumber
       @Update @AllRecords
   @
 ]

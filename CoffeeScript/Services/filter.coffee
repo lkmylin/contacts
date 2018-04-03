@@ -1,19 +1,19 @@
 DatatableModule.service 'datatableFilterProvider', ->
-  @Filter = (pager, data, columns) ->
-    PagerInstance: pager
-    Data: data
-    Input: pager.StateManager.GetValue pager.ControlID, 'FilterInput', ''
+  @Filter = (parent, rows, columns) ->
+    Parent: parent
+    AllRecords: rows
+    Input: parent.StateManager.GetValue parent.TableID, parent.StateManager.CachedProperties.FilterInput, ''
     Columns: columns
-    SelectedColumn: columns[pager.StateManager.GetValue pager.ControlID, 'FilterColumnIndex', 0]
+    SelectedColumn: columns.filter((column) -> column.ColumnID is parent.StateManager.GetValue(parent.TableID, parent.StateManager.CachedProperties.FilterColumnID, columns[0].ColumnID))[0]
     FilterData: ->
       context = @
-      context.PagerInstance.StateManager.SetValue context.PagerInstance.ControlID, 'FilterColumnIndex', context.Columns.findIndex((x) -> x.ColumnID is context.SelectedColumn.ColumnID)
-      context.PagerInstance.StateManager.SetValue context.PagerInstance.ControlID, 'FilterInput', context.Input
+      context.Parent.StateManager.SetValue context.Parent.TableID, @Parent.StateManager.CachedProperties.FilterColumnID, context.SelectedColumn.ColumnID
+      context.Parent.StateManager.SetValue context.Parent.TableID, @Parent.StateManager.CachedProperties.FilterInput, context.Input
       input = context.Input.toLowerCase()
-      filteredData = if context.Input.length > 2 then context.Data.filter((item) -> item[context.SelectedColumn.ColumnID].toLowerCase().search(input) > -1) else context.Data
-      context.PagerInstance.Update filteredData
+      filteredData = if context.Input.length > 2 then context.AllRecords.filter((item) -> item[context.SelectedColumn.ColumnID].toLowerCase().search(input) > -1) else context.AllRecords
+      context.Parent.Pager.Update filteredData
     SelectedColumnChanged: ->
       context = @
-      context.PagerInstance.StateManager.SetValue context.PagerInstance.ControlID, 'FilterColumnIndex', context.Columns.findIndex((x) -> x.ColumnID is context.SelectedColumn.ColumnID)
+      context.Parent.StateManager.SetValue context.Parent.TableID, @Parent.StateManager.CachedProperties.FilterColumnID, context.SelectedColumn.ColumnID
       context.FilterData() if context.Input.length > 2
   @

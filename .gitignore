@@ -4,4 +4,4 @@
 **/bin
 **/obj
 **/packages
-/CoffeeScript/*.js
+/CoffeeScript/**/*.js

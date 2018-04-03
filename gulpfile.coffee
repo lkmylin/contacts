@@ -54,6 +54,6 @@ gulp.task 'minify', ->
     .pipe gulp.dest '.'
 
 gulp.task 'watch', ->
-  watch './**/*.coffee', ['coffee-lint', 'coffee']
-  watch './**/*.js', ['bundle']
+  watch './CoffeeScript/**/*.coffee', ['coffee-lint', 'coffee']
+  watch './CoffeeScript/**/*.js', ['bundle']
   watch output + 'bundle.js', ['minify']

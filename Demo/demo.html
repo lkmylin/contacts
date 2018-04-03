@@ -15,8 +15,8 @@
                     {ColumnID: "Column4", Title: "Column 4"},
                     {ColumnID: "Column5", Title: "Column 5"}
                 ]
-                $http.get("test.json").then(function (response) {
-                    $scope.Data.TableData = new datatableProvider.Datatable(columns, response.data, "Table1")
+                $http.get("demo.json").then(function (response) {
+                    $scope.Data.TableData = new datatableProvider.Datatable(columns, response.data, "Table1");
                 });
             }]);
         </script>
